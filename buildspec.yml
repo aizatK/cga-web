@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - "echo loggin into ECR Registry"
+      - $(aws ecr get-login --region us-east-1 --no-include-email)
+  build:
+    commands:
+      - "echo Build started on `date`"
+      - "echo Building docker image"
+      - "docker build -t cga-demo-web ."
+      - "docker tag cga-demo-web:latest 746191125515.dkr.ecr.us-east-1.amazonaws.com/cga-demo-web:latest"
+  post_build:
+    commands:
+      - "echo Build is complete on `date`"
+      - "echo Pushing the docker image"
+      - "docker push 746191125515.dkr.ecr.us-east-1.amazonaws.com/cga-demo-web:latest"
